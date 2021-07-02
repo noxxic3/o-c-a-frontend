@@ -1,0 +1,297 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');  /* Importació de la família tipogràfica a emprar */
+
+
+/* GENERAL */
+
+body {
+	font-family: 'Open Sans', Avenir, Helvetica, Arial, sans-serif;
+	font-size: medium;
+	background-color: white;                                     /*  <<<<<<<<<<<   */
+	text-align: center;
+}
+
+		/* Tablet */
+		@media screen and (min-width: 768px) {                
+			body {
+				background-color: white;
+			}
+		}
+		
+		/* Desktop */
+		@media screen and (min-width: 1280px) {                
+			body {
+				background-color: white;
+			}
+		}
+
+
+/* Componentes de App.vue */            /* Recuerda que los estilos que asignamos directamente a las etiquetas de los componentes de App.vue afectan directamente al <div> de primer nivel del elemento <template> de ese componente ->  <template><div></div></template>, que es donde tenemos que incluir todo el contenido, y además tiene prioridad, osea que si en el componente ponemos estilos a ese <div>, el que afectará será el de main.js */
+#header {
+	background-color: #804000;
+}
+
+#navigation {
+	background-color: #FFCC33;	
+}
+
+#main {
+	max-width: 1280px;
+	margin: auto;
+	background-color: white;                                 /*  <<<<<<<<<<<   */
+}
+
+/*
+body > div.no {
+	
+	max-width: 960px;
+	margin: auto;
+}
+
+div.backgroundFullWidth{                                                        
+	width: 100vw;                                
+	position: relative;                  	   	   
+	left: 50%;                                     
+	right: 50%;                         
+    margin-right: -50vw;
+	margin-left: -50vw;
+	background-color: #001363;
+}
+*/
+
+/* Breadcrumb */
+
+.breadcrumb {
+	background-color: white;
+	width: 100%;
+	text-align: left;
+	border: solid 1px black;
+	font-size: 0.7em;
+}
+
+.breadcrumb:hover {
+	background-color: #cccccc;
+	cursor: pointer;
+}
+
+	  /* Tablet */
+	  @media screen and (min-width: 768px) {                
+		.breadcrumb {
+			font-size: 0.8em;
+		}
+	  }
+	  
+	  /* Desktop */
+	  @media screen and (min-width: 1280px) {                
+		.breadcrumb {
+			font-size: 0.9em;
+		}
+	  }
+
+/* Containers*/
+
+section.patient_status, .patients_search, .users_search, .patient_status_treatment, .edit_status_treatment_selection, .edit_status_treatment_observation, .manage_treatments_results {
+	background-color: white;
+	border: solid 2px #997300;
+	border-radius: 25px;
+	padding-bottom: 20px;
+	max-width: 100%;
+	margin: auto;
+	margin-top: 20px;
+}
+
+
+	  /* Tablet */
+	  @media screen and (min-width: 768px) {                
+		section.patient_status, .patients_search, .users_search, .patient_status_treatment, .edit_status_treatment_selection, .edit_status_treatment_observation, .manage_treatments_results  {
+			max-width: 90%;
+			border: solid 4px #997300;
+		}
+	  }
+	  
+	  /* Desktop */
+	  @media screen and (min-width: 1280px) {                
+		section.patient_status, .patients_search, .users_search, .patient_status_treatment, .edit_status_treatment_selection, .edit_status_treatment_observation, .manage_treatments_results  {
+			border: solid 6px #997300;
+		}
+	  }
+
+
+/* Forms common styles */
+
+div.form, div.newStatusForm {
+  border: solid 2px #997300;
+  max-width: 100%;
+  margin: auto;
+  border-radius: 25px;
+  padding: 20px 0 10px 0;
+  margin-top: 30px;
+}
+
+div.form h2, div.newStatusForm h2 {
+  font-size: 0.9em;
+}
+
+form label {
+  font-size: 0.7em;
+}
+
+form input {
+  width: 70%;
+  height: 16px;
+}
+
+form .inputButton, .adminButtons {
+  color: white;
+  background-color: #806000;
+
+  width: 70px;
+  height: 20px;
+
+  border: 2px solid grey;
+  box-sizing: border-box;
+  line-height: 0px;
+  font-size: 0.6em;
+  transition: all 0.5s;
+  margin-top: 20px;
+}
+
+form .inputButton:hover, .adminButtons:hover {
+	background-color: #f3f3f3;
+    border: 2px solid black;
+    color: black;
+    font-weight: bold;
+}
+
+
+      /* Tablet */
+      @media screen and (min-width: 768px) {                
+        div.form, div.newStatusForm {
+          border: solid 4px #997300;
+		  max-width: 70%;
+          padding: 30px 0 20px 0;
+        }
+
+        div.form h2, div.newStatusForm h2 {
+          font-size: 1.2em;
+        }
+
+        form label {
+          font-size: 0.9em;
+        }
+
+        form input {
+          width: 50%;
+          height: 20px;
+        }
+
+        form .inputButton, .adminButtons {
+          width: 100px;
+          height: 30px;
+          font-size: 0.8em;
+        }
+      }
+      
+      /* Desktop */
+      @media screen and (min-width: 1280px) {                
+        div.form, div.newStatusForm {
+		  border: solid 6px #997300;
+          max-width: 50%;
+        }
+
+        div.form h2, div.newStatusForm h2 {
+          font-size: 1.5em;
+        }
+
+        form label {
+          font-size: 1em;
+        }
+
+        form input {
+          height: 22px;
+        }
+
+        form .inputButton, .adminButtons {
+          width: 130px;
+          height: 33px;
+          font-size: 0.9em;
+        }
+      }
+	  
+		
+/* Database records */
+
+.database_record{
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+	margin-top: 10px;
+}
+
+.database_record > div {
+	background-color: #cdcdb1;           /* d7d7c1   cdcdb1 */
+	border: solid 1px #DFDFC5;
+	font-size: 0.5em;
+	/*
+	min-width: 10%;
+	padding: 0 10px;
+	*/
+
+	min-width: 90px;
+}
+
+.database_record > div > h3 {
+	color: #595959;
+	font-weight: normal;
+}
+
+.database_record > div > p {
+	margin-top: 5px;
+}
+	
+.userImage{
+	border-radius: 50px;
+	width: 40px;
+	height: 40px;
+	margin-top: -6px;
+}	
+
+      /* Tablet */
+      @media screen and (min-width: 768px) {                
+		.database_record > div {
+			font-size: 0.6em;
+			min-width: 110px;
+		}
+		
+		.database_record > div > p {
+			margin-top: 20px;
+		}
+
+		.userImage{
+          width: 60px;
+          height: 60px;
+          margin-top: -7px;
+        }
+      }
+      
+      /* Desktop */
+      @media screen and (min-width: 1280px) {                
+		.database_record > div {
+			font-size: 0.7em;
+			min-width: 120px;
+		}
+		
+		.database_record > div > p {
+			margin-top: 25px;
+		}
+
+		.userImage{
+          width: 70px;
+          height: 70px;
+          margin-top: -8px;
+        }
+      }
+	  
+	  
+/**********/
+
+
