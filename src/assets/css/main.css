@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');  /* Importació de la família tipogràfica a emprar */
+@import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');     /* Import font */
 
 
 /* GENERAL */
@@ -6,7 +6,7 @@
 body {
 	font-family: 'Open Sans', Avenir, Helvetica, Arial, sans-serif;
 	font-size: medium;
-	background-color: white;                                     /*  <<<<<<<<<<<   */
+	background-color: white;                                 /*  <<<<<<<<<<<   */
 	text-align: center;
 }
 
@@ -25,7 +25,7 @@ body {
 		}
 
 
-/* Componentes de App.vue */            /* Recuerda que los estilos que asignamos directamente a las etiquetas de los componentes de App.vue afectan directamente al <div> de primer nivel del elemento <template> de ese componente ->  <template><div></div></template>, que es donde tenemos que incluir todo el contenido, y además tiene prioridad, osea que si en el componente ponemos estilos a ese <div>, el que afectará será el de main.js */
+/* Components App.vue */            /* The styles that we assign directly to the custom <component-name/> tags of the components that are displayed in App.vue or any other view, directly affect the first-level <div> of the <template> element of that component: <template> <div> </div> </template>. In addition, the styles that are added from outside the components (either those that are put in the view in which they are shown or in main.js) have priority, since they affect later, and may be that each view wants to overwrite some style of the component displayed in this. */
 #header {
 	background-color: #804000;
 }
@@ -117,6 +117,14 @@ section.patient_status, .patients_search, .users_search, .patient_status_treatme
 
 
 /* Forms common styles */
+
+input:valid {
+  border: 2px solid green;
+}
+
+/*input:invalid {
+  border: 1px solid red;
+}*/
 
 div.form, div.newStatusForm {
   border: solid 2px #997300;

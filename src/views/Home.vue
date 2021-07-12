@@ -1,23 +1,13 @@
 <template>
   <div>
     <img  class="isotype" src="../assets/images/Cover.svg" alt="Welcome picture" ><br>
-
     <p>Obesity Control App is the official web application of the Obesity Control Center to offer obesity treatments. Here you can record the evolution of your physical condition and receive the appropriate treatment provided by our specialists.</p>
-
-    <!--<news-component />-->
-
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-// import HelloWorld from "@/components/HelloWorld.vue";
-
 export default {
   name: "ObesityControlCenter",
-  /*components: {
-    HelloWorld
-  }*/
   data(){
     return{
     }
@@ -64,5 +54,4 @@ export default {
           font-size: 1em;
         }
       }
-
 </style>

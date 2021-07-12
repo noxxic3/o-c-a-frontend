@@ -3,46 +3,30 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 
-import './assets/css/main.css';                          // CSS
+import './assets/css/main.css';                          // Global CSS
 
 Vue.config.productionTip = false;
 
-// Import components
+// Import components & HTML tag name assignment
 import Header from './components/Header.vue'  
-Vue.component('header-component', Header);       // Component HTML name, el siguiente parámetro es a cual se le asigna
+Vue.component('header-component', Header);    
 
 import UserAccount from './components/UserAccount.vue'  
 Vue.component('user-account-component', UserAccount);     
 
-import DataHistory from './components/DataHistory.vue'  
-Vue.component('data-history-component', DataHistory);    
+import DataHistory from './components/DataHistory.vue'                          // This should be divided into 2 components: PatientStatusHistoryAndTreatments & TreatmentSelection (that would share content with ManageTreatments) 
+Vue.component('data-history-component', DataHistory);                           
 
-import SearchPatientsForm from './components/SearchPatientsForm.vue'            // ManagePatients
+import SearchPatientsForm from './components/SearchPatientsForm.vue'            // I should rename it to ManagePatients
 Vue.component('search-patients-form-component', SearchPatientsForm);            
 
-import SearchUsersForm from './components/SearchUsersForm.vue'                  // ManageUsers
+import SearchUsersForm from './components/SearchUsersForm.vue'                  // I should rename it to ManageUsers
 Vue.component('search-users-form-component', SearchUsersForm);   
 
 import ManageTreatments from './components/admin-dashboard/ManageTreatments.vue'  
-Vue.component('manage-treatments-component', ManageTreatments);  
+Vue.component('manage-treatments-component', ManageTreatments);      
 
-
-//import News from './components/home/News.vue'  
-//Vue.component('news-component', News);
-
-//import PatientStatusDataForm from './components/patient-dashboard/PatientStatusDataForm.vue'  
-//Vue.component('patient-status-data-form-component', PatientStatusDataForm);
-
-//import CurrentTreatment from './components/CurrentTreatment.vue'  
-//Vue.component('current-treatment-component', CurrentTreatment);  
-
-//import RegisterForm from './components/register/RegisterForm.vue'  
-//Vue.component('register-form-component', RegisterForm);  
-
-//import LoginForm from './components/login/LoginForm.vue'  
-//Vue.component('login-form-component', LoginForm);       
-
-
+// Vue instance
 new Vue({
   router,
   store,

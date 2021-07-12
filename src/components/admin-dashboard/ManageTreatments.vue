@@ -4,28 +4,21 @@
       
     <!-- Select treatment -->
     <div class="selectTreatment">
-      <!--<form name="selectForm">-->
         <label for="treatmentComponent">Select treatment to list or add:</label><br> 
         <select id="treatmentComponent" name="treatmentComponent" required  v-model="treatmentComponentSelected">
           <option value="diets" selected>Diets</option>
           <option value="medications">Medication</option>
           <option value="physicalactivities">Physical Activity</option>
         </select>
-      <!--</form>-->
     </div>
 
     <button class="adminButtons adminButtonsSelect1"  v-on:click="getRequestToTreatmentsControllersIndex(treatmentComponentSelected)">List</button>
     <button class="adminButtons adminButtonsSelect2" v-on:click="showAddTreatmentForm = true">Add</button>
 
-
     <!-- Add trearment form -->
     <div class="form"  v-if="showAddTreatmentForm"> 
-        <!--{{treatmentComponentSelected}}-->
-        
       <h2>Add {{treatmentComponentSelected}} treatment form</h2>
-      
       <form v-on:submit.prevent="postRequestToTreatmentsControllersStore(treatmentComponentSelected)"  enctype="multipart/form-data">   
-        
         <label for="name">Name:</label><br>
         <input type="text" id="name" name="name" minlength="2" maxlength="40"  v-model="treatmentRecordName" required ><br>  
 
@@ -40,57 +33,39 @@
         <input class="inputButton" type="submit" value="Send"><br>
         <button class="adminButtons adminButtonsHide" v-on:click="showAddTreatmentForm = false">Hide</button>
       </form>
-      
     </div>
- 
-
 
     <!-- Treatment Results -->
-    <div v-if="responseTreatmentIndex != ''"  class="manage_treatments_results">       <!-- añadirle el estilo de caja general-->
-
+    <div v-if="responseTreatmentIndex != ''"  class="manage_treatments_results">       <!-- Add general box style to it -->
       <h2>{{treatmentsDisplayed}}</h2>
-
       <section v-for="element in responseTreatmentIndex" v-bind:key="element.id">
-    
         <div>
           <div><span>ID: </span>{{element.id}}</div>
         </div>
-        
         <div><span>Name: </span>{{element.name}}</div>
-        
         <div>
-          <!-- <img v-bind:src="element.image" alt="Treatment image"> -->
           <img v-bind:src="'http://localhost/8_TFG/ObesityControlApp/public/storage/images/treatments/'+element.image" alt="Treatment image" >
         </div>
-        
         <div class="description">
-          
-          <input type="checkbox" v-bind:id="element.id"/>       <!-- --- -->
+          <input type="checkbox" v-bind:id="element.id"/>      
           <label v-bind:for="element.id"> 
             <span>Description: </span> 
             <i class="fas fa-chevron-circle-down"></i>  
-          </label>                                              <!-- --- -->
-          
+          </label>                                             
           <div>{{element.description}}</div>       <!-- If the variable of the interpolation has no value, the element is not visible -->
           <div>{{element.posology}}</div>          <!-- One of the treatments doesn't have .description property, it has .posology property -->
         </div> 
-
         <div>
           <button class="adminButtons2"  v-on:click="editForm(treatmentComponentSelected, element)">Edit</button>
           <button class="adminButtons2"  v-on:click="deleteRequestToTreatmentsControllersDestroy(treatmentComponentSelected, element.id)">Delete</button>
         </div>
-      
       </section>
     </div>
-
-
 
     <!-- Edit Treatment Form -->
     <div class="form formEdit" v-if="showEditTreatmentForm">
       <h2>Edit treatment Form</h2>
       <form v-on:submit.prevent="putRequestToTreatmentsControllersUpdate(treatmentComponentToEdit, treatmentRecordIdToEdit)"  enctype="multipart/form-data">
-
-
         <label for="nameToEdit">Name:</label><br>
         <input type="text" id="nameToEdit" name="name" minlength="2" maxlength="40"  v-model="treatmentRecordNameToEdit" required ><br>  
 
@@ -102,43 +77,30 @@
                   rows="4" cols="50" maxlength="5000" placeholder="Maximum 5000 characters..."  v-model="treatmentRecordDescriptionToEdit" >
         </textarea> <br>
 
-
         <input class="inputButton" type="submit" value="Update">
       </form>
-
-       <button class="adminButtons adminButtonsHide" v-on:click="showEditTreatmentForm = false">Hide</button>
+      <button class="adminButtons adminButtonsHide" v-on:click="showEditTreatmentForm = false">Hide</button>
     </div>
-
-    
   </div>
 </template>
 
 <script>
-
 import axios from 'axios';
-//console.log(axios);
 
 export default {
   name: "ManageTreatments",
-  /*props: {
-    msg: String
-  }*/
-
   data(){
-    return {
+    return {                                      // Should organize data into objects
       responseTreatmentIndex: '',
       treatmentComponentSelected: '',
-
       treatmentsDisplayed: '',
-
+      // Show form
       showAddTreatmentForm: false,
       showEditTreatmentForm: false,
-
       // Add form
       treatmentRecordName: '',
       treatmentRecordImage: '',
       treatmentRecordDescription: '',
-      
       // Edit form
       treatmentComponentToEdit: '',
       treatmentRecordIdToEdit: '',
@@ -149,43 +111,37 @@ export default {
   },
   methods: {
     editForm(treatmentComponentSelected, element){
-      // Aquí no se hace la petición, solo se hace que se muestre el formulario y se guardan los valores de la iteración a editar
-      // para que el formulario HTML pueda acceder a ellos. El formulario será el que invoque la petición.
+      /*
+      Here the request is not made, only the form is shown and the values of the v-for iteration to be edited are saved
+      so that the HTML form can access them. The form will be the one that invokes the request.
+      */ 
       this.showEditTreatmentForm = true;
-
-      this.treatmentComponentToEdit = treatmentComponentSelected;  // Si a posteriori el usuario selecciona otro treatmentComponent (Diet, etc.) el que iba a editar no se verá afectado a no ser que vuelva a pulsar el botón de edición.
- 
-      console.log(element);
-      
+      this.treatmentComponentToEdit = treatmentComponentSelected;  // If the user subsequently selects another treatmentComponent (Diet, etc.) the one he was going to edit will not be affected unless he presses the edit button again.
+      //console.log(element);
       this.treatmentRecordIdToEdit = element.id;
       this.treatmentRecordNameToEdit = element.name;
-      //this.treatmentRecordImageNameToEdit = element.image;   // Realmente el nombre de la imagen no necesitamos guardarlo porque lo que el usuario modificará será el archivo, no el nombre, y si no añade un archivo nuevo, en el backend está la lógica para mantener el archivo antiguo.
+      //this.treatmentRecordImageNameToEdit = element.image;       // We don't really need to save the name of the image because what the user will modify will be the file, not the name, and if he doesn't add a new file, in the backend there is the logic to keep the old file.
       if(this.treatmentComponentToEdit == 'medications'){
         this.treatmentRecordDescriptionToEdit = element.posology;
       } else {
         this.treatmentRecordDescriptionToEdit = element.description;
       }
-      
     },
-
-    attach(){                        //  ++++++++++++
-      this.treatmentRecordImage = this.$refs.file.files[0];            // Solo queremos enviar el único archivo que se ha adjuntado
-      console.log('>>>> element files array   >>>> ', this.$refs.file);             // Si vemos la propiedad  .files del elemento type="file" vemos que es un array que tendrá todos los archivos que se hayan añadido a ese elemento.
+    attach(){                                //  ++++++++++++
+      this.treatmentRecordImage = this.$refs.file.files[0];                         // We only want to send the only file that has been attached.
+      console.log('>>>> element files array   >>>> ', this.$refs.file);             // If we see the .files property of the type="file" element, we see that it is an array that will have all the files that have been added to that element.
       console.log('>>>> element file selected >>>> ', this.$refs.file.files[0]);
     },
-    
     attachToEdit(){                       
       this.treatmentRecordImageToEdit = this.$refs.file.files[0];
     },
 
     //// AJAX Requests
-
-    getRequestToTreatmentsControllersIndex(resource){           // resource = treatmentComponentSelected
-      
+    getRequestToTreatmentsControllersIndex(resource){             // resource = treatmentComponentSelected
       this.showAddTreatmentForm = false;
       this.showEditTreatmentForm = false;
       let treatmentsSectionTitle = '';
-      
+      // Depending on the treatment that the user has selected, we put the correct title of the section that will show the results
       if (resource == 'diets') {
         treatmentsSectionTitle = 'Diets';
       } else if(resource == 'medications'){
@@ -193,7 +149,6 @@ export default {
       } else if(resource == 'physicalactivities'){
         treatmentsSectionTitle = 'Physical Activities';
       }
-
       // GET request to TreatmentControllers Index()              // Request to receive the available list of any of the treatments 
       axios({
         method: 'get',
@@ -214,24 +169,18 @@ export default {
         }  
       })
       .catch(error => console.log(error));
-       
     },
 
-
     postRequestToTreatmentsControllersStore(resource){
-      
       //alert('postRequestToTreatmentsControllersStore() for treatment: ' + resource);
-
-      if( (this.treatmentRecordName != '' && !isNaN(this.treatmentRecordName) ) ){          // isNaN = is Not a Number 
+      if( (this.treatmentRecordName != '' && !isNaN(this.treatmentRecordName) ) ){              // isNaN = is Not a Number 
           alert('Please, do not enter numeric values ​​in the name');
       } else {
-
         let formData = new FormData();
         formData.append('name', this.treatmentRecordName);
         formData.append('image', this.treatmentRecordImage);
         formData.append('description', this.treatmentRecordDescription); 
-        console.log('>> formData >> ', formData);
-
+        //console.log('>> formData >> ', formData);
         axios({
           method: 'post',
           url: 'http://localhost/8_TFG/ObesityControlApp/public/api/' + resource,
@@ -244,40 +193,31 @@ export default {
         .then(res => {
           console.log(res);
           console.log(res.status);
-   
           if (res.status == 200){
-            this.getRequestToTreatmentsControllersIndex(resource);
+            this.getRequestToTreatmentsControllersIndex(resource);        // Once added, we make a request again for the results to be displayed with the added record.
             this.treatmentRecordName = "";
             this.treatmentRecordImage = "";
             this.treatmentRecordDescription = "";
           }
         })                                                  
         .catch(error => {
-          console.log(error.response);               // el .response equivaldría al objeto res  que consultamos en el .then()
-          //console.log(error.response.status);
-            
-          //alert('Existing email address, please try another');
-          
+          console.log(error.response);               // the .response would be equivalent to the res object that we query in the .then()
+          //console.log(error.response.status);          
         }); 
-
       };
-
     },
 
     putRequestToTreatmentsControllersUpdate(resource, treatmentID){
       //alert('putRequestToTreatmentsControllersUpdate() for treatment: ' + resource + ' and treatment ID: ' + treatmentID);
-    
       if( (this.treatmentRecordNameToEdit != '' && !isNaN(this.treatmentRecordNameToEdit) ) ){          // isNaN = is Not a Number 
       alert('Please, do not enter numeric values ​​in the name');
       } else {
-
         let formData = new FormData();
         formData.append('name', this.treatmentRecordNameToEdit);
         formData.append('image', this.treatmentRecordImageToEdit);
         formData.append('description', this.treatmentRecordDescriptionToEdit);
-        formData.append('_method', 'PUT');                      //  <<<<<<<++++++++++++ PUT 
-        console.log('>> formData >> ', formData);
-
+        formData.append('_method', 'PUT');                      //  <<<<<<<    // ++++++++++++  // PUT 
+        //console.log('>> formData >> ', formData);
         axios({
           method: 'post',
           url: 'http://localhost/8_TFG/ObesityControlApp/public/api/' + resource + '/' + treatmentID,
@@ -290,7 +230,6 @@ export default {
         .then(res => {
           console.log(res);
           console.log(res.status);
-   
           if (res.status == 200){
             this.getRequestToTreatmentsControllersIndex(resource);
             this.treatmentRecordNameToEdit = "";
@@ -299,19 +238,14 @@ export default {
           }
         })                                                  
         .catch(error => {
-          console.log(error.response);               // el .response equivaldría al objeto res  que consultamos en el .then()
+          console.log(error.response);               // the .response would be equivalent to the res object that we query in the .then()
           //console.log(error.response.status);
         }); 
-
       };
-    
     },
-
-
 
     deleteRequestToTreatmentsControllersDestroy(resource, treatmentID){
       //alert('deleteRequestToTreatmentsControllersDestroy() for treatment: ' + resource + ' and treatment ID: ' + treatmentID);
-  
       axios({
         method: 'delete',
         url: 'http://localhost/8_TFG/ObesityControlApp/public/api/' + resource + '/' + treatmentID,
@@ -322,40 +256,31 @@ export default {
       .then(res => {
         console.log(res);
         console.log(res.status);
-  
         if (res.status == 200){
           this.getRequestToTreatmentsControllersIndex(resource);
         }
       })                                                  
       .catch(error => {
-        console.log(error.response);               // el .response equivaldría al objeto res  que consultamos en el .then()
+        console.log(error.response);                 // the .response would be equivalent to the res object that we query in the .then()
         //console.log(error.response.status);
       }); 
-    
     },
   }
-
 };
 </script>
 
-
-
 <style scoped>
+/* MANAGE TREATMENTS */
 
- /* MANAGE TREATMENTS */
-
-  div.form {
-    background-color: #ccff33;
-  }
-
-  div.formEdit {
-    background-color: #ffff33;    
-  }
-
-  div.form textarea, div.formEdit textarea {
-    width: 90%;
-  }
-
+div.form {
+  background-color: #ccff33;
+}
+div.formEdit {
+  background-color: #ffff33;    
+}
+div.form textarea, div.formEdit textarea {
+  width: 90%;
+}
 
 .manage_treatments_results {
 	font-size: 0.7em;
@@ -365,141 +290,124 @@ export default {
 .manage_treatments_results h2 {
   font-size: 1.3em;
 }
-
-
 .manage_treatments_results > section {             /* edit_status_treatment_selection */
 	margin: 5px 0;
 	display: flex;
 	justify-content: center;
 	flex-wrap: wrap;
 }
-
 .manage_treatments_results > section > div {
 	background-color: #ffcc80;
 	border: solid 1px;
 	width: 100%;
 	padding: 5px 0;
 }
-
 .manage_treatments_results > section > div > img {
 	width: 40%;
 }
-
 .manage_treatments_results > section > div span, .manage_treatments_results > section > div label {
 	font-weight: bold;
 }
-
 .manage_treatments_results > section > .description > div {
-	  padding: 0.5% 2%;
+	padding: 0.5% 2%;
 }
 
-      /* Tablet */
-      @media screen and (min-width: 768px) {                
-		  div.form textarea, div.formEdit textarea {
+    /* Tablet */
+    @media screen and (min-width: 768px) {                
+      div.form textarea, div.formEdit textarea {
         width: 70%;
       }
-    .manage_treatments_results {
-			font-size: 0.8em;
-		}
-		.manage_treatments_results h2 {
-		  font-size: 1.4em;
-		}
-		
-		
-		.manage_treatments_results > section {             /* edit_status_treatment_selection */
-			margin: 7px 0;
-		}
-		.manage_treatments_results > section > div {
-			width: 33%;
-		}
-		.manage_treatments_results > section > div.description {
-			width: 66%;
-		}
-		.manage_treatments_results > section {
-			margin: 7px 0;
-		}
+      .manage_treatments_results {
+        font-size: 0.8em;
       }
-
+      .manage_treatments_results h2 {
+        font-size: 1.4em;
+      }
       
-      /* Desktop */
-      @media screen and (min-width: 1280px) {   
-		.manage_treatments_results {
-			font-size: 0.9em;
-		}
-		.manage_treatments_results h2 {
-		  font-size: 1.5em;
-		}
-	  
-		.manage_treatments_results > section {
-			margin: 9px 0;
-		}
+      .manage_treatments_results > section {             /* edit_status_treatment_selection */
+        margin: 7px 0;
       }
+      .manage_treatments_results > section > div {
+        width: 33%;
+      }
+      .manage_treatments_results > section > div.description {
+        width: 66%;
+      }
+      .manage_treatments_results > section {
+        margin: 7px 0;
+      }
+    }
+      
+    /* Desktop */
+    @media screen and (min-width: 1280px) {   
+      .manage_treatments_results {
+        font-size: 0.9em;
+      }
+      .manage_treatments_results h2 {
+        font-size: 1.5em;
+      }
+      
+      .manage_treatments_results > section {
+        margin: 9px 0;
+      }
+    }
 	  
-	  
-	/* Display treatment description functionality */
+/* Display treatment description functionality */
 .manage_treatments_results > section > .description > input[type="checkbox"] {
 	display: none;
 }
-
 .manage_treatments_results > section > .description > div {
 	display: none;
 }
-
 .manage_treatments_results > section > .description > input:checked ~ div {
 	display: block;
 }
-
 
 .manage_treatments_results > section > div label > i {
 	margin-left: 20px;
 	font-size: 1.7em;
 }
-
 .manage_treatments_results > section > div label > i:hover {
   color: #994d00;
 }
-
 .manage_treatments_results > section > .description > input:checked + label > i {
 	transform: rotate(180deg);
 }
 
-/***************** */
 
 
 .manage_treatments_results .adminButtons2 {
-    display: inline-block;
-    margin: 7px 3px 7px 3px;
-    background-color: grey;
-    color: white;
-    font-size: 1.2em;
+  display: inline-block;
+  margin: 7px 3px 7px 3px;
+  background-color: grey;
+  color: white;
+  font-size: 1.2em;
 	width: 57px;
 	height: auto;
 }
-
 .manage_treatments_results .adminButtons2:hover {
-    background-color: white;
-    border: 1px solid black;
-    color: black;
-    font-weight: bold;
+  background-color: white;
+  border: 1px solid black;
+  color: black;
+  font-weight: bold;
 }
 
       /* Tablet */
       @media screen and (min-width: 768px) {                
-		.manage_treatments_results .adminButtons2 {
-			font-size: 0.9em;
-			width: 65px;
-			height: 22px;
-		}
+        .manage_treatments_results .adminButtons2 {
+          font-size: 0.9em;
+          width: 65px;
+          height: 22px;
+        }
       }
       
       /* Desktop */
       @media screen and (min-width: 1280px) {                
-		.manage_treatments_results .adminButtons2 {
-			width: 75px;
-			height: 25px;
-		}
-  }
-
+        .manage_treatments_results .adminButtons2 {
+          width: 75px;
+          height: 25px;
+        }
+      }
 
 
 .adminButtonsHide {
@@ -509,18 +417,16 @@ export default {
   background-color: white;
   border-color: black;
 } 
-
- .adminButtonsSelect1, .adminButtonsSelect2{
-   margin: 0 1%;
-   background-color: #999900;
-   border-color: lightgrey;
+.adminButtonsSelect1, .adminButtonsSelect2{
+  margin: 0 1%;
+  background-color: #999900;
+  border-color: lightgrey;
 }
 
 
 .h2_main{
   font-size: 0.9em;
 }
-
 .selectTreatment{
   font-size: 0.8em;
   margin-bottom: 1%;
@@ -557,6 +463,6 @@ export default {
           width: 200px;
           font-size: 1.1em;
         }
-     }
+      }
 
 </style>

@@ -13,10 +13,7 @@ import DoctorDashboard from "../views/DoctorDashboard.vue";
 import PatientDoctorView from "../views/PatientDoctorView.vue";
 import OfficeStackDashboard from "../views/OfficeStackDashboard.vue";
 import AdminDashboard from "../views/AdminDashboard.vue";
-import store from '../store/index.js';                                         // Importamos el archivo de Vuex
-
-//import __Prueba from "../views/__Prueba.vue";                                  // <<----  Prueba
-
+import store from '../store/index.js';                                         // Import Vuex
 
 // Routes configuration saved on a 'routes' constant
 const routes = [
@@ -31,7 +28,7 @@ const routes = [
     // route level code-splitting, this generates a separate chunk (about.[hash].js) for this route which is lazy-loaded when the route is visited.
     //component: () => import(/* webpackChunkName: "about" */ "../views/About.vue"),
     component: Register,
-    meta: {requiresAuth: true, requiresRoleOfficeOrAdmin: true},             // No puedo poner  requiresRoleOffice: true, requiresRoleAdmin: true  porque entonces se deberían cumplir las 2 condiciones correspondientes.
+    meta: {requiresAuth: true, requiresRoleOfficeOrAdmin: true},       // I can't put  requiresRoleOffice: true, requiresRoleAdmin: true  because then the 2 corresponding conditions should be met.
   },
   {
     path: "/login",
@@ -68,28 +65,21 @@ const routes = [
     component: AdminDashboard,
 	  meta: {requiresAuth: true, requiresRoleAdmin: true},                       //  { requiresAuth: true, requiresRole: true }    if( to.meta.requiresRole && (store.state.user_session_subtype.role_name != 'Admin' ) )
   },
-  
- /* {                                                                           // <<----  Prueba
-    path: "/p",
-    name: "__Prueba",
-    component: __Prueba
-  },*/
 ];
 
 // Vue Router instance
 const router = new VueRouter({
-  routes                              // send our routes constant to the Vue Router constructor
+  routes                              // Send our routes constant to the Vue Router constructor
 });
 
 
-////////////////////
-// Navigation Guards (control de acceso para rutas para las que se necesite autenticación para acceder o rutas que pertenezcan a roles concretos)
 
-router.beforeEach( function(to, from, next){                                 // El argumento  from no lo estamos usando, podemos poner '_' en su lugar.
-    if( to.meta.requiresAuth && !store.state.token ){                          // store.state.token, store es el objeto donde hemos importado el archivo de Vuex. Recuerda que ahora estamos en el archivo routes.js, con lo cual, si queremos acceder al objeto store, hay que importarlo a este archivo, ya que no podemos acceder con this.$store..., ya que no estamos ahora dentro de ninguna instancia o componente Vue. 
-		next('/login');                   //si queremos prohibir acceso y redirigir.
+// Navigation Guards (access control for routes for which authentication is required to access or for routes belonging to specific roles)
+router.beforeEach( function(to, from, next){                                 // We are not using the 'from' argument, we can put '_' instead.
+    if( to.meta.requiresAuth && !store.state.token ){                            // store.state.token, store is the object where we have imported the Vuex file. We are now in the routes.js file, therefore, if we want to access the store object, we must import it into this file, since we cannot access it with this.$store ..., since we are not now inside no Vue instance or component.
+		next('/login');                   // If we want to prohibit access and redirect.
 	} else if ( to.meta.requiresRoleAdmin && (store.state.user_session_subtype.role_name != 'Admin' ) ){
-		next(false);                      //si queremos solo prohibir acceso (no accederá a esa ruta, se quedará en la actual).
+		next(false);                      // If we only want to prohibit access (it will not access that route, it will stay in the current one).
 	} else if ( to.meta.requiresRoleOffice && (store.state.user_session_subtype.role_name != 'OfficeStack' ) ){
 		next(false);
 	} else if ( to.meta.requiresRoleDoctor && (store.state.user_session_subtype.role_name != 'Doctor' ) ){
@@ -104,8 +94,6 @@ router.beforeEach( function(to, from, next){                                 // 
 		next();
 	};
 } );
-
-////////////////////
 
 
 // Vue Router instance export

@@ -2,7 +2,7 @@
   <div id="app">
 
     <header-component id="header" />
-    <user-account-component id="navigation"/>       <!-- Se podría llamar navigation, aunque en esta app solo se usa para mostrar los botones relacionados con la sesión de usuario -->
+    <user-account-component id="navigation"/>       <!-- <user-account-component/> could be called 'navigation', although in this app it is only used to display buttons related to the user session -->
 
     <router-view id="main" />
   
@@ -19,7 +19,7 @@ export default {
   },
 
   created(){
-    // Verificamos si hay datos de sesión en LocalStorage y si los hay, los guardamos en Vuex
+    // We check if there is session data in LocalStorage and if there is, we store it in Vuex
     const token = localStorage.getItem("token");
 
     if (token) {
@@ -38,23 +38,19 @@ export default {
       this.$store.state.view = view; 
       //alert(view);
       
-       // Cuando refrescamos la página del navegador, Vue Router redirige por defecto a /login, con lo cual hay que redirigir manualmente a la vista en la que se estaba. 
-      if (view == 'ObesityControlCenter'){  // Recuerda la próxima vez guardar el nombre de la ruta de la vista en vez de el nombre del archivo de la vista, así se puede aprovechar.
+       // When we refresh the browser page, Vue Router redirects by default to /login, therefore, it is necessary to manually redirect to the view the user was in.
+      if (view == 'ObesityControlCenter'){  // Remember next time to save in LocalStorage the path name of the view instead of the file name of the view, in order to take advantage of it.  If it had been done like this it would only have been necessary to put  this.$router.replace(view)  instead of the whole conditional.
         this.$router.replace('/');
       } else if (view == 'PatientDataDoctorView'){
         this.$router.replace('/PatientDoctorView');
       } else {
-        this.$router.replace(view);         // En el caso de las otras vistas coincide el nombre del archivo con el de la ruta, aunque falta el '/' antes del nombre pero parece que los métodos de $router lo perdonan.   
+        this.$router.replace(view);         // In the case of the other views, the file name matches the path, although the '/' is missing before the name, but it seems that the $router methods forgive it.
       }
-      
     };
-
     //alert(token);
     //alert(this.$store.state.user_session_subtype.role_name);
   },
-
 }
-
 
 </script>
 
@@ -64,6 +60,5 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   background-color: white;
 }
-
 
 </style>

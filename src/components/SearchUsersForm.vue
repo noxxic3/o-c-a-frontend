@@ -1,9 +1,6 @@
 <template>
   <div>
-    
     <!-- Search Users Form -->
-    <!--<button v-on:click="getRequestToUserControllerIndex()">Get all users</button>-->
-
     <div class="form">
       <h2>Search users form</h2>
       <form v-on:submit.prevent="getRequestToUserControllerShow()">
@@ -20,24 +17,21 @@
     <!-- Results -->
     <section v-if="responseShow != ''"  class="users_search">
       <h2>Users search result</h2>
-                                                                        <!--Esta es una mejor forma para mostrar lo que quiero de los objetos recibidos del array que procesarlo y cambiarle el nombre de las propiedades como hice en SearchPatientsForm, ya que si en un futuro quiero que el método show() del Controller devuelva valores de más columnas, se puede hacer sin necesidad de retocar el retorno -->
-      <div v-for="element in responseShow" v-bind:key="element.id"  class="database_record">      <!--Esto tendría que ser una tabla HTML-->
-        <!--<p>{{element}}</p>-->
+      <!-- This is a better way to show what I want from the objects received from the array than to process it and rename the properties as I did in SearchPatientsForm, since if in the future I want the show() method of the Controller to return values from more columns, it can be done without retouching the return -->
+      <div v-for="element in responseShow" v-bind:key="element.id"  class="database_record">      <!-- This should be an HTML table, but then I couldn't put the title in every row -->
         <div> 
           <h3>ID</h3> 
           <p>{{ element.id }}</p> 
         </div>
         <div> 
-          <h3>Image</h3> 
-          
+          <h3>Image</h3>
           <img class="userImage" v-if="element.role_name == 'Patient'"     v-bind:src="'http://localhost/8_TFG/ObesityControlApp/public/storage/images/patients/'+element.image" alt="User image">
           <img class="userImage" v-if="element.role_name == 'Doctor'"      v-bind:src="'http://localhost/8_TFG/ObesityControlApp/public/images/users/'+'user-md-solid.svg'" alt="User image">
           <img class="userImage" v-if="element.role_name == 'OfficeStack'" v-bind:src="'http://localhost/8_TFG/ObesityControlApp/public/images/users/'+'user-nurse-solid.svg'" alt="User image">
           <img class="userImage" v-if="element.role_name == 'Admin'"       v-bind:src="'http://localhost/8_TFG/ObesityControlApp/public/images/users/'+'user-cog-solid.svg'" alt="User image">
           <!-- 
-            Realmente estas imágenes de los roles que no son 'Patient' tendrían que recibirse de la petición, pero en la lógica del 
-            UserController store() y update() solo he asignado imagen por defecto al paciente si este no sube imagen.
-            En los otros roles no he puesto posibilidad de subir imagen y en el backend no les he asignado aún imagen por defecto.
+            Actually these images of the roles that are not 'Patient' would have to be received from the request to the backend, but in the logic of the UserController store() and update() I have only assigned the default image to the patient if he does not upload an image.
+            In the other roles I have not put the possibility of uploading an image and in the backend I have not assigned them an image by default yet.
           -->
         </div>
         <div> 
@@ -68,7 +62,6 @@
           <button v-on:click="editForm(element)">Edit</button>
           <button v-on:click="deleteRequestToUserControllerDestroy(element.id, element.role_name)">Delete</button>
         </div>
-
       </div>
     </section>
 
@@ -76,7 +69,6 @@
     <div v-if="showEditForm != ''" class="form formEdit">
       <h2>Edit User Form</h2>
       <form v-on:submit.prevent="putRequestToUserControllerUpdate()"  enctype="multipart/form-data">
-
         <label for="name">Name:</label><br>
         <input type="text" id="name" name="name" minlength="2" maxlength="20"  required  v-model="userNameEdit"><br>   <!-- pattern="[A-Za-z]{2,}"  -->
 
@@ -84,16 +76,16 @@
         <input type="text" id="surname" name="surname" minlength="2" maxlength="30" required  v-model="userSurnameEdit"><br>   
 
         <label for="birthdate">Birthdate:</label><br>
-        <input type="date" id="birthdate" name="birthdate" required  v-model="userBirthdateEdit"><br>     <!-- type="date"  incluye un calendario para la selección de la fecha y la proporciona en formato YYYY-MM-DD: 2020-11-30.  Si no se introduce fecha, la variable será una string vacía.  -->
+        <input type="date" id="birthdate" name="birthdate" required  v-model="userBirthdateEdit"><br>    
 
         <label for="email">Email:</label><br>
-        <input type="email" id="email" name="email" minlength="3" maxlength="20" required  v-model="userEmailEdit"><br>                <!-- type="email"  valida automáticamente que el email introducido tenga una @ -->
+        <input type="email" id="email" name="email" minlength="3" maxlength="20" required  v-model="userEmailEdit"><br>       
 
         <label for="password">Password:</label><br>
-        <input type="password" id="password" name="password" minlength="8" maxlength="12" required  v-model="userPasswordEdit"><br>    <!-- The <input type="password"> defines a password field (characters are masked) -->
+        <input type="password" id="password" name="password" minlength="8" maxlength="12" required  v-model="userPasswordEdit"><br>  
 
         <div v-if="userRole == 'Patient'">
-          <label for="image">Image:</label><br>                                                   <!-- Aunque el campo  image  en la BD está en la tabla Users y por lo tanto, se puede guardar imagen para todos los usuarios sean del rol que sean, en la aplicación en los dashboards para los usuarios que no son paciente no se ha pensado poner imagen de usuario, ya que la app es un servicio para el paciente y no se quiere sobrecargar de imágenes -->
+          <label for="image">Image:</label><br>                                                
           <input type="file" id="image" name="image"  ref="file"  v-on:change="attach()"> <br><br>   <!-- ++++++++++++ -->  
         
           <label for="height">Height (inches):</label><br>
@@ -112,37 +104,27 @@
         </div><br> 
 
         <input class="inputButton inputEditButton" type="submit" value="Update">
-
       </form>
-       <button  v-on:click="showEditForm = ''">Hide</button>
+      <button  v-on:click="showEditForm = ''">Hide</button>
     </div>
-
 
     <div v-if="noUserFound != ''">
       <p>{{noUserFound}}</p>
     </div>
-    
   </div>
 </template>
 
 <script>
-
 import axios from 'axios';
-
 
 //var response_data_acces_token = '5|3PJOJrQxdDs8EoIIMnk54q9jazNDO4Pw8riSq4RV';    
 /* 
-Esta variable se tendrá que eliminar cuando almacenemos en Vuex el valor de response.data.access_token  
-que recibiremos del retorno de la petición de la vista Login. Entonces en los headers de las peticiones, vez de response_data_acces_token
-enviaremos la varuable de Vuex en la que hayamos almacenado el valor del token.
+This test variable will have to be deleted when we store the value of response.data.access_token in Vuex
+that we will receive from the return of the Login View request. Then in the request headers, instead of response_data_acces_token
+We will send the Vuex variable in which we have stored the value of the token.
 */
-
 export default {
   name: "SearchUsersForm",
-  /*props: {
-    msg: String
-  }*/
-
   data(){
     return{
       //responseIndex: '',
@@ -188,40 +170,25 @@ export default {
 
       this.patientHeightEdit = element.height;
       this.doctorSpecialtyEdit = element.speciality;
-      
     },
-    attach(){                        //  ++++++++++++
-      this.userImageEdit = this.$refs.file.files[0];            // Solo queremos enviar el único archivo que se ha adjuntado
-      console.log('>>>> element files array   >>>> ', this.$refs.file);             // Si vemos la propiedad  .files del elemento type="file" vemos que es un array que tendrá todos los archivos que se hayan añadido a ese elemento.
+    // Attach form file
+    attach(){                                //  ++++++++++++
+      this.userImageEdit = this.$refs.file.files[0];                                // We only want to send the only file that has been attached
+      console.log('>>>> element files array   >>>> ', this.$refs.file);             // If we see the .files property of the type="file" element, we see that it is an array that will have all the files that have been added to that element.
       console.log('>>>> element file selected >>>> ', this.$refs.file.files[0]);
     },
-
     //// AJAX Requests
-    /*
-    getRequestToUserControllerIndex(){
-      axios.get('http://localhost/8_TFG/ObesityControlApp/public/api/users')
-      .then(res => {
-        console.log(res);
-        this.responseIndex = res.data;    
-        })
-      .catch(error => console.log(error));
-    },
-    */
     getRequestToUserControllerShow(){
-
       let validate = true;
       if( this.userName == '' && this.userSurname == ''){
         alert('Please, fill in at least one of the 2 fields');
         validate = false;
       };
-
       if( (this.userName != '' && !isNaN(this.userName)) || (this.userSurname != '' && !isNaN(this.userSurname)) ){          // isNaN = is Not a Number 
           alert('Please, do not enter numeric values ​​in the first and last name');
           validate = false;
       };
-
       if(validate){
-        
         axios({
           method: 'get',
           url: 'http://localhost/8_TFG/ObesityControlApp/public/api/users',
@@ -241,103 +208,73 @@ export default {
             this.responseShow = res.data;
             this.noUserFound = '';
           } else {
-            this.responseShow = res.data;    // Si recibe 0 posiciones igualmente hay que reinicializar el array para que no se sigan mostrando las anteriores, también podríamos haber hecho:  this.responseShow = res.data = '';
+            this.responseShow = res.data;      // If it receives 0 positions, it is necessary to reinitialize the array so that the previous ones are not shown, we could also have done: this.responseShow = res.data = '';
             this.noUserFound = 'No users have been found that match the data entered';
           }
         })
         .catch(error => console.log(error));
       };
-
     },
     
     putRequestToUserControllerUpdate(){
-      // Solamente necesita el ID del usuario para enviar al backend, en User es la única PK
-      // Al modificar, se modificará de User ya que es donde están los datos de registro que podrian ser modificados.
-      //    ...si además queremos modificar el rol, tendríamos que borrar el registro del SubTipo correspondiente y crearlo en SupTipo que queramos (con la misma PK que sería también FK), recuerda que la columna PK de los SubTipos no són autoincrment a diferencia de la de User, con lo cual, no habría problema al eliminar registro de que quede una posición de la PK autoincrement vacía, ya que no quedaría ninguna vacía.    
-      //    ...de todas maneras, en este caso no tiene sentido modificar el rol, ya que un paciente no será doctor o viceversa ni un doctor personal de oficina o viceversa, y el rol de administrador será un rol limitado que no se va a estar cambiando con frecuencia. En última instancia, si se quiere modificar el rol siempre se puede eliminar el usuario y volverlo a crear.
+      // Only the user ID is needed to send to the backend, in User it is the only PK.
+      // When modifying, only User table will be modified since it is where the registry data that could be modified is.
+      //    ...if we also want to modify the role, we would have to delete the corresponding SubType record and create it in the SupType we want (with the same PK which would also be FK), remember that the PK column of the SubTypes are not autoincrment unlike the User PK column, thus, there would be no problem when deleting the record that there would be an empty position of the Primary Key autoincrement, since there would be no empty position because there is no autoincrement.
+      //    ...in any case, in this case it does not make sense to modify the role, since a patient will not be a doctor or vice versa nor a doctor an office staff or vice versa, and the administrator role will be a limited role that will not be changed with frequency. Ultimately, if we want to modify the role, we can always delete the user and recreate it.
    
       if( (this.userNameEdit != '' && !isNaN(this.userNameEdit)) || (this.userSurnameEdit != '' && !isNaN(this.userSurnameEdit)) ){          // isNaN = is Not a Number 
           alert('Please, do not enter numeric values ​​in the first and last name');
       } else {
-
-        ////////////////////////////////////////////
         
-        let formData = new FormData();                               //  ++++++++++++     // Para enviar archivos a través de AJAX, tenemos que usar un objeto de tipo FormData
-        //formData.append('role_name', this.userRole);                 //  ++++++++++++ 
+        let formData = new FormData();                                   //  ++++++++++++     // To send files through AJAX, we have to use an object of type FormData
+        //formData.append('role_name', this.userRole);                   //  ++++++++++++ 
         formData.append('user_name', this.userNameEdit);                 //  ++++++++++++
         formData.append('user_surnames', this.userSurnameEdit);          //  ++++++++++++
         formData.append('user_birthdate', this.userBirthdateEdit);       //  ++++++++++++
         formData.append('user_email', this.userEmailEdit);               //  ++++++++++++
         formData.append('user_password', this.userPasswordEdit);         //  ++++++++++++
-        
-        formData.append('user_image', this.userImageEdit);           //  ++++++++++++      <<----  Aquí le asignamos el valor del file del formulario que ahora sí lo adjuntamos y en attach() cojemos el file que queremos. Antes no lo adjuntaba y se asignaba la variable  this.userImage  entera sin coger del array files el que quería.
-        
+        formData.append('user_image', this.userImageEdit);               //  ++++++++++++      // Here we assign the value of the form file that we attach and in the attach() method we take the file we want. 
         formData.append('patient_height', this.patientHeightEdit);       //  ++++++++++++
         formData.append('doctor_specialty', this.doctorSpecialtyEdit);   //  ++++++++++++
-        formData.append('_method', 'PUT');                      //  <<<<<<<++++++++++++  PUT
+        formData.append('_method', 'PUT');                               //  ++++++++++++      // <<<<<<<  PUT
         console.log('>> formData >> ', formData);
-        
-        /////////////////////////////////////////////
 
         axios({
-          method: 'post',                                       //  <<<<<<<++++++++++++
+          method: 'post',                                         //  ++++++++++++    //  <<<<<<<
           url: 'http://localhost/8_TFG/ObesityControlApp/public/api/users/' + this.userID + "/" + this.userRole,
           //headers: {"Content-type": "application/json"},
           headers: {
             'Authorization': 'Bearer ' + this.$store.state.token,
             'Content-Type': 'multipart/form-data',
-          },         //  ++++++++++++       // Para enviar archivos a través de AJAX, tenemos que poner este valor de header que equivale al valor del atributo  enctype="multipart/form-data"  que ponemos en el elemento <form> cuando queremos enviar archivos.
+          },         //  ++++++++++++       // To send files through AJAX, we have to put this header value 'Content-Type' which is equivalent to the value of the enctype="multipart/form-data" attribute that we put in the <form> element when we want to send files.
           //params: data,
           data: formData,                                         //  ++++++++++++
-          
         })
-
-        /////////////////////////////////////////////////////////////////////////////////////////////
-        /*
-        axios.put('http://localhost/8_TFG/ObesityControlApp/public/api/users/' + this.userID + "/" + this.userRole,      // <<---   El ID del usuario lo tenemos que coger del retorno de la petición al método show(), ya que este usuario es el que se quiere consultar, no el usuario que está en sesión.
-        {                                           
-          
-          user_name: this.userNameEdit,
-          user_surnames: this.userSurnameEdit,
-          user_birthdate: this.userBirthdateEdit,
-          user_email: this.userEmailEdit,
-          user_password: this.userPasswordEdit,
-
-          user_image: this.userImageEdit,                // Solo se inserta en Patient
-
-          patient_height: this.patientHeightEdit,        // Solo se inserta en Patient
-          doctor_specialty: this.doctorSpecialtyEdit,    // Solo se inserta en Doctor    // recuerda que en la BD es  speciality
-
-        }) 
-        */
         .then(res => {
           console.log(res);
           if(res.status == 200){
-            this.getRequestToUserControllerShow();             // No hace falta enviar parámetros porque los valores que introdujo el usuario en el fomulario están en los datos Vue 
+            this.getRequestToUserControllerShow();                // It is not necessary to send parameters because the values that the user entered in the form are in the Vue data
           } else {
               alert("The user could not be updated, please try again later");
           };
         })
         .catch(error => {
           console.log(error);
-          console.log(error.response);               // el .response equivaldría al objeto res  que consultamos en el .then()
+          console.log(error.response);                            // The .response attribute would be equivalent to the  res  object that we query in the .then()
           console.log(error.response.status);
           alert('Existing email address, please try another');
         });
-        
-        /////////////////////////////////////////////////////////////////////////////////////////////
         this.showEditForm = ''; 
       };
     },
 
     deleteRequestToUserControllerDestroy(userID, userRole){
       //alert('User ID to delete: ' + userID);
-      // Al eliminar se tendrá que eliminar de User y del SubTipo y de las tablas que tenga asociadas
-      // Con lo cual, hay que enviar el ID de User y el rol para que el backend no tenga que buscar en todos los subtipos a ver donde encuentra el ID.
-      // MySQL update autoincrement column when delete 1 register: no se deben actualizar los valores de la columna autoincrement porque pueden haber otras tablas referenciandolo  https://stackoverflow.com/questions/2214141/auto-increment-after-delete-in-mysql
-      
-      //axios.delete('http://localhost/8_TFG/ObesityControlApp/public/api/users/' + userID + '/' + userRole)
-      
+      /*
+        When deleting, it will be necessary to delete the User and the SubType and the tables associated with it.
+        Thus, in this case I send the User ID and the role in the route so that the backend does not have to search in all the subtypes to see where it finds the ID.
+        MySQL update autoincrement column when deleting 1 register: the values of the autoincrement column should not be updated because there may be other tables referencing it. What can be done is to put a message on the frontend that that record no longer exists if it try to access this   https://stackoverflow.com/questions/2214141/auto-increment-after-delete-in-mysql
+      */
       axios({
         method: 'delete',
         url: 'http://localhost/8_TFG/ObesityControlApp/public/api/users/' + userID + '/' + userRole,
@@ -348,22 +285,18 @@ export default {
       .then(res => { 
         console.log(res);
         if(res.status == 200){
-          this.getRequestToUserControllerShow();             // No hace falta enviar parámetros porque los valores que introdujo el usuario en el fomulario están en los datos Vue 
+          this.getRequestToUserControllerShow();                   // It is not necessary to send parameters because the values that the user entered in the form are in the Vue data
         } else {
             alert("The user could not be deleted, please try again later");
         };       
       })
       .catch(error => console.log(error));
     },
-
   }
-
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
   /* Search Users form */ 
   div.form {
     background-color: #a6a6a6;
@@ -374,12 +307,12 @@ export default {
     background-color: #707070;
   }
 
-form .inputButton:hover {
-	  background-color: #f3f3f3;
-    border: 2px solid black;
-    color: black;
-    font-weight: bold;
-}
+  form .inputButton:hover {
+      background-color: #f3f3f3;
+      border: 2px solid black;
+      color: black;
+      font-weight: bold;
+  }
 
   /* Edit Users form */ 
   div.formEdit {
@@ -448,12 +381,12 @@ form .inputButton:hover {
 
 
   /* Users results */
-
   section.users_search {
     height: 400px;
     overflow: auto;
     border: solid 2px #997300;
   }
+
   section.users_search > h2 {
     font-size: 0.9em;
   }

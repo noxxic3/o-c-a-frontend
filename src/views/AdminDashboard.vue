@@ -1,22 +1,17 @@
 <template>
   <div class="about">
-
     <div class="manageButtons">
       <button v-on:click="managePatients()">Manage patients</button>
       <button v-on:click="manageUsers()">Manage users</button>
       <button v-on:click="manageTreatments()">Manage treatments</button>
     </div>
-
     <search-patients-form-component v-if="showManagePatients" />
     <search-users-form-component v-if="showManageUsers" />
     <manage-treatments-component v-if="showManageTreatments" />
-
   </div>
 </template>
 
-
 <script>
-
 export default {
   name: "AdminDashboard",
   data(){
@@ -31,20 +26,17 @@ export default {
     localStorage.setItem("view", 'AdminDashboard');
     this.$store.state.view_title = 'Admin Dashboard';
   },
-  
   methods: {
     managePatients(){
       this.showManagePatients = !this.showManagePatients;
       this.showManageUsers = false;
       this.showManageTreatments = false;
     },
-
     manageUsers(){
       this.showManagePatients = false;
       this.showManageUsers = !this.showManageUsers;
       this.showManageTreatments = false;
     },
-
     manageTreatments(){
       this.showManagePatients = false;
       this.showManageUsers = false;
@@ -52,17 +44,14 @@ export default {
     },
   }
 }
-
 </script>
 
 <style scoped>
-
 div.manageButtons{
   display: flex;
   justify-content: space-around;
 
   margin: 15px auto;
-
   width: 70%;
 }
 
@@ -87,7 +76,6 @@ div.manageButtons button:hover{
     font-weight: bold;
 }
 
-
       /* Tablet */
       @media screen and (min-width: 768px) {  
         div.manageButtons{
@@ -102,18 +90,14 @@ div.manageButtons button:hover{
               font-size: 0.8em;
               margin: auto;
         }
-
       }
       
       /* Desktop */
-      @media screen and (min-width: 1280px) {                
-
+      @media screen and (min-width: 1280px) {
         div.manageButtons button{
               width: 150px;
               height: 43px;
               font-size: 0.9em;
         }
-
       }
-
 </style>

@@ -1,10 +1,8 @@
 <template>
   <div>
-    
     <div class="form">
       <h2>Search patients form</h2>
       <form v-on:submit.prevent="getRequestToPatientControllerShow()">
-
         <label for="name">Name:</label><br>
         <input type="text" id="name" name="name" v-model="patientName"><br>
 
@@ -15,15 +13,13 @@
         <input type="radio" id="toCheck" name="toCheck" value="true" v-model="patientStatusToCheck"><br>  
 
         <input class="inputButton" type="submit" value="Search">
-
       </form>
       <p>*You must fill in at least one of the 3 fields</p>
     </div>
 
-    <section class="patients_search" v-if="responseShow != ''">      <!-- Si en vez de responseShow pongo responseShow_DataToShow no se activa el v-if, pero si escribo en cualquiera de los inputs, se activa y vemos que los datos sí que han llegado. Posiblemente sea porque al recibir el retorno de la petición AJAX en esa variable no se hace una asignación única sino que se hace un recorrido y los observadores de Vue quedan a la espera antes de actualizar la Vista??  -->
+    <section class="patients_search" v-if="responseShow != ''">      <!-- If instead of responseShow I put responseShow_DataToShow, the v-if is not activated, but if I write in any of the inputs, it is activated and we see that the data has arrived. It is because responseShow_DataToShow is an array and I should have used the syntax  this.$set()  to assign value to this array. -->
       <h2>Patients search result</h2>
       <div class="patientRow database_record" v-for="element in responseShow_DataToShow" v-bind:key="element['ID']" v-on:click="goToPatientDataView(element['ID'], element['Image'])">  
-        
         <div>
           <h3>ID</h3> <p>{{element['ID']}}</p>
         </div>
@@ -51,20 +47,12 @@
           <!--<p>{{element['Checked']}}</p>-->
           <p v-if="element['Checked'] == 0">NO</p>
         </div>
-
-        <!--
-        <div v-for="(value, key) in element" v-bind:key="key">
-          <h3>{{key}}</h3> <p>{{value}}</p>
-        </div> 
-        -->
-      
       </div>
     </section>
 
     <div v-if="noPatientFound != ''">    
       <p>{{noPatientFound}}</p>
     </div>
-
   </div>
 </template>
 
@@ -88,9 +76,7 @@ export default {
     }
   },
   created(){
-
-
-      // Por defecto se muestran los pacientes que tienen un estado a asignar tratamiento
+      // By default, the patients that have a status to be assigned treatment are shown
       axios({
         method: 'get',
         url: 'http://localhost/8_TFG/ObesityControlApp/public/api/patients',
@@ -104,21 +90,17 @@ export default {
         }
       })
       .then(res => {
-        console.log(res);
-        if(res.data.length != 0){                 // This response returns an array, can be empty but will never be null
-          //alert('AAAAAAAAAAASSSSSSSSSSSSSSSSSSSSSSSSSSSSSS');
-          console.log('AAAAAAAAAAASSSSSSSSSSSSSSSSSSSSSSSSSSSSSS');
+        //console.log(res);
+        if(res.data.length != 0){                            // This response returns an array, can be empty but will never be null
           this.responseShow = res.data;
-          console.log(res.data);
+          //console.log(res.data);
           //this.responseShow_DataToShow[0]['a'] = 3333333;
-          console.log("AAAAAAAAAAA: "+this.responseShow_DataToShow);
-
+          //console.log("AAAA: "+this.responseShow_DataToShow);
           let i;
           let patientStatus;
           for(i=0; i<res.data.length; i++){
-            //console.log('>>>>>>>>>>>> ' + res.data[i].last_status_checked);
-            
-            patientStatus = {              // Ponemos en nuestro array responseShow_DataToShow solo las propiedades que nos interesan de los objetos recibidos
+            //console.log('>>>> ' + res.data[i].last_status_checked);
+            patientStatus = {                                // We put in our responseShow_DataToShow array only the properties that interest us of the received objects. But it is not necessary to prepare an array with the data to be displayed, the necessary data can be displayed using only the necessary HTML elements in the v-for loop.
               'ID': res.data[i].id, 
               'Image': res.data[i].image, 
               'Name': res.data[i].name, 
@@ -126,63 +108,39 @@ export default {
               'Birth date': res.data[i].birthdate, 
               'Height': res.data[i].height, 
               'Email': res.data[i].email, 
-              'Checked': res.data[i].last_status_checked,     // Si alguno de estos datos es undefined, se mostrará vacío en el contenedor donde se muestre
+              'Checked': res.data[i].last_status_checked,     // If any of this data is undefined, it will be shown empty in the container where it is shown
             }
             this.responseShow_DataToShow[i] = patientStatus;
           }
-
-          this.patientStatusToCheck = '';                  // Reinicializamos la variable patientStatusToCheck. Si la hubiéramos activado y no la reinicializáramos veríamos que en la siguiente petición sigue con valor false cuando tendría que no tener valor.
-          this.noPatientFound = '';                        // Reinicializamos
+          this.patientStatusToCheck = '';                     // Reinitialize the patientStatusToCheck variable. If we had activated it and not reinitialized it, we would see that in the next request it continues with a false value when it should have no value.
+          this.noPatientFound = '';                           // Reinitialize
           //this.responseShow_DataToShow = res.data;
           console.log(this.responseShow_DataToShow);
-
         } else {
-          //alert('BBBBBBBBBBBBBBBBBBBBBBBBBBBBBSSSSSSSSSSSSSSSSSSSSS');
           this.noPatientFound = 'There are still no patients with status to check';
         }
-
       })
       .catch(error => console.log(error));
-
-
-
-
-  },
-  computed: {
-
   },
   methods: {
     getRequestToPatientControllerShow(){
-      this.responseShow = '';                                 // Reinicializamos para que no salga el título  <h2>Patient search result</h2>  si se recibe un array vacío de respuesta.
-      this.responseShow_DataToShow = [];                      // Reinicializamos. En esta variable, a diferencia de  this.responseShow  no asignamos directamente el retorno de la petición sino que la recorremos para asignar de todos los elementos del array recibido, solo las propiedades que nos interesa mostrar. Por lo tanto, si no la reinicializamos y hacemos una segunda petición que recibe menos registros que la primera, por ejemplo si en la primera recibimos 5 posiciones de array y en la segunda 3, veremos que seguimos teniendo 5, donde las 2 últimas son las de la petición anterior.
-                                                              // Esto solo es necesario hacerlo porque los datos recibidos los procesamos y los almacenamos en  responseShow_DataToShow.
+      this.responseShow = '';                                 // Reinitialize so that the title <h2>Patient search result</h2> does not appear if an empty response array is received.
+      this.responseShow_DataToShow = [];                      // Reinitialize. In this variable, unlike this.responseShow, we do not directly assign the return of the request but we iterate it to assign, of all the elements of the received array, only the properties that we want to show. Therefore, if we do not reinitialize it and make a second request that receives fewer records than the first, for example if in the first we receive 5 array positions and in the second 3, we will see that we still have 5, where the last 2 are the ones of the previous request. This is only necessary because we process the received data and store it in responseShow_DataToShow.
+      // Search Patients form validation
       let validate = true;
       if( this.patientName == '' && this.patientSurname == '' && this.patientStatusToCheck == ''){
         alert('Please, fill in at least one of the 3 fields');
         validate = false;
       };
-
       if( (this.patientName != '' && !isNaN(this.patientName)) || (this.patientSurname != '' && !isNaN(this.patientSurname)) ){          // isNaN = is Not a Number 
           alert('Please, do not enter numeric values ​​in the first and last name');
           validate = false;
       };
-  
-      if(this.patientStatusToCheck == 'true'){          // si  to_check == true, significa que hay que buscar en la columna  checked  los que tienen valor  false
+      if(this.patientStatusToCheck == 'true'){                // if  to_check == true, means that it is necessary to search the  checked  column for those with  false  value
         this.patientStatusToCheck = false;
       };
-
       if(validate){
-        //alert('Petición AJAX! ' + this.patientName + ' ' + this.patientSurname + ' ' + this.patientStatusToCheck);
-
-        /*
-        axios.get('http://localhost/8_TFG/ObesityControlApp/public/api/patients', {
-          params: {
-            name: this.patientName,
-            surname: this.patientSurname,
-            checked: this.patientStatusToCheck,           
-          }
-        })*/
-        
+        //alert('AJAX! ' + this.patientName + ' ' + this.patientSurname + ' ' + this.patientStatusToCheck);
         axios({
           method: 'get',
           url: 'http://localhost/8_TFG/ObesityControlApp/public/api/patients',
@@ -196,21 +154,18 @@ export default {
           }
         })
         .then(res => {
-          console.log(res);
+          //console.log(res);
           if(res.data.length != 0){                 // This response returns an array, can be empty but will never be null
-            //alert('AAAAAAAAAAASSSSSSSSSSSSSSSSSSSSSSSSSSSSSS');
-            console.log('AAAAAAAAAAASSSSSSSSSSSSSSSSSSSSSSSSSSSSSS');
+            //console.log('AAAAAAAAAAA');
             this.responseShow = res.data;
-            console.log(res.data);
+            //console.log(res.data);
             //this.responseShow_DataToShow[0]['a'] = 3333333;
-            console.log("AAAAAAAAAAA: "+this.responseShow_DataToShow);
-
+            //console.log("AAAA: "+this.responseShow_DataToShow);
             let i;
             let patientStatus;
             for(i=0; i<res.data.length; i++){
               //console.log('>>>>>>>>>>>> ' + res.data[i].last_status_checked);
-              
-              patientStatus = {              // Ponemos en nuestro array responseShow_DataToShow solo las propiedades que nos interesan de los objetos recibidos
+              patientStatus = {                                 // We put in our responseShow_DataToShow array only the properties that interest us of the received objects. But it is not necessary to prepare an array with the data to be displayed, the necessary data can be displayed using only the necessary HTML elements in the v-for loop.
                 'ID': res.data[i].id, 
                 'Image': res.data[i].image, 
                 'Name': res.data[i].name, 
@@ -218,51 +173,43 @@ export default {
                 'Birth date': res.data[i].birthdate, 
                 'Height': res.data[i].height, 
                 'Email': res.data[i].email, 
-                'Checked': res.data[i].last_status_checked,     // Si alguno de estos datos es undefined, se mostrará vacío en el contenedor donde se muestre
+                'Checked': res.data[i].last_status_checked,     // If any of this data is undefined, it will be shown empty in the container where it is shown
               }
               this.responseShow_DataToShow[i] = patientStatus;
             }
-
-            this.patientStatusToCheck = '';                  // Reinicializamos la variable patientStatusToCheck. Si la hubiéramos activado y no la reinicializáramos veríamos que en la siguiente petición sigue con valor false cuando tendría que no tener valor.
-            this.noPatientFound = '';                        // Reinicializamos
+            this.patientStatusToCheck = '';                     // Reinitialize the patientStatusToCheck variable. If we had activated it and not reinitialized it, we would see that in the next request it continues with a false value when it should have no value.
+            this.noPatientFound = '';                           // Reinitialize
             //this.responseShow_DataToShow = res.data;
             console.log(this.responseShow_DataToShow);
 
           } else {
-            //alert('BBBBBBBBBBBBBBBBBBBBBBBBBBBBBSSSSSSSSSSSSSSSSSSSSS');
+            //alert('BBBBBBBBBBBBBBB');
             this.noPatientFound = 'No patients have been found that match the data entered';
           }
-
         })
         .catch(error => console.log(error));
-        
       }
     },
     goToPatientDataView(patientID, patientImage){
-      //alert("goToPatientDataView, patientID: " + patientID + ", patientImage: " + patientImage);    // patientID se tendrá que guardar en Vuex porque será el ID del usuario que se consulte en la vista Patient Doctor View (Patient Data) y su componente Data History.
-                                                                // Cuando se haga el Login, si el usuario es Paciente, el ID de usuario en sesión y el de paciente que guardemos en Vuex será el mismo. Si el usuario es Doctor, cuando hagamos el Login guardaremos su ID de usuario en Vuex y el del paciente lo guardaremos cuando se active esta función.   
+      //alert("goToPatientDataView, patientID: " + patientID + ", patientImage: " + patientImage);    
+      
+      // patientID will have to be saved in Vuex because it will be the ID of the user that is consulted in the PatientDoctorView (Patient Data) and its DataHistory component.
+      // When the Login is made, if the user is Patient, the user ID in session and the patient ID that we save in Vuex will be the same. If the user is a Doctor, when we login, we will save his user ID in Vuex and the patient's ID will be saved when this function is executed.
       this.$store.state.patient_id = patientID;
       this.$store.state.patient_image = patientImage;
       localStorage.setItem("patient_id", patientID);
       localStorage.setItem("patient_image", patientImage);
-      this.$router.push('/PatientDoctorView');    // Aquí tenemos que redirigir a la vista Patient Doctor View (Patient Data).
+      this.$router.push('/PatientDoctorView');   
     },
-
-
   },
-
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
 /* Patients search form */
-
 div.form {
   background-color: #b7b795;
 }
-
 div.form p {
   font-size: 0.7em;
 }
@@ -281,20 +228,16 @@ div.form p {
         }
       }
 
-
 /* Patients search result */
-
 section.patients_search {
   height: 300px;
   overflow: auto;
   border: solid 2px #997300;
 }
-
 .database_record:hover > div{
   background-color: white;
   cursor: pointer;
 }
-
 .patients_search > h2 {
   font-size: 0.9em;
 }
@@ -318,5 +261,4 @@ section.patients_search {
           font-size: 1.5em;
         }
       }
-
 </style>

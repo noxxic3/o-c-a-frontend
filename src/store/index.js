@@ -13,7 +13,7 @@ export default new Vuex.Store({
 	patient_id: '',
 	patient_image: '',
 	
-	view: '',    // current view being displayed
+	view: '',                      // Current view being displayed
 	view_title: '',
   },
   mutations: {},
