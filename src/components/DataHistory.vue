@@ -398,7 +398,7 @@ export default {
     getRequestToPatientStateControllerShow(){
       axios({
         method: 'get',
-        url: 'http://localhost/8_TFG/ObesityControlApp/public/api/patientstates/' + this.patientID,
+        url: 'patientstates/' + this.patientID,
         headers: {
           'Authorization': 'Bearer ' + this.$store.state.token,                  // response.data.access_token
         }
@@ -437,7 +437,7 @@ export default {
       };
       axios({
         method: 'post',
-        url: 'http://localhost/8_TFG/ObesityControlApp/public/api/patientstates',
+        url: 'patientstates',
         params: data,
         headers: {
           'Authorization': 'Bearer ' + this.$store.state.token,
@@ -474,7 +474,7 @@ export default {
       };
       axios({
         method: 'put',                                    
-        url: 'http://localhost/8_TFG/ObesityControlApp/public/api/patientstates/' + this.patientID + "/" + this.statusDateToEdit,
+        url: 'patientstates/' + this.patientID + "/" + this.statusDateToEdit,
         headers: {
           'Authorization': 'Bearer ' + this.$store.state.token,
         },        
@@ -506,7 +506,7 @@ export default {
       //alert("Show treatment for date: " + element.date);       // The patient ID should not be taken from the user in session, because the doctor also has access here, and when the doctor is here, then patientID is null.
       axios({
         method: 'get',
-        url: 'http://localhost/8_TFG/ObesityControlApp/public/api/patienttreatments/' + element.patient_id + "/" + element.date,
+        url: 'patienttreatments/' + element.patient_id + "/" + element.date,
         headers: {
           'Authorization': 'Bearer ' + this.$store.state.token,                  // response.data.access_token
         }
@@ -562,7 +562,7 @@ export default {
         // GET request to TreatmentControllers Index()              // Request to receive the available list of any of the treatments 
         axios({
           method: 'get',
-          url: 'http://localhost/8_TFG/ObesityControlApp/public/api/'+ resource,
+          url: resource,
           headers: {
             'Authorization': 'Bearer ' + this.$store.state.token,  //'27|c8ssbxyALQKzuzzzrr2zd6wpiqQ87nmDGhs2KP0V',
           }
@@ -582,7 +582,7 @@ export default {
         // GET request to TreatmentControllers Index()              // Request to receive the available list of any of the treatments 
         axios({
           method: 'get',
-          url: 'http://localhost/8_TFG/ObesityControlApp/public/api/'+ resource,
+          url: resource,
           headers: {
             'Authorization': 'Bearer ' + this.$store.state.token,  //'27|c8ssbxyALQKzuzzzrr2zd6wpiqQ87nmDGhs2KP0V',
           }
@@ -602,7 +602,7 @@ export default {
         // GET request to TreatmentControllers Index()              // Request to receive the available list of any of the treatments 
         axios({
           method: 'get',
-          url: 'http://localhost/8_TFG/ObesityControlApp/public/api/'+ resource,
+          url: resource,
           headers: {
             'Authorization': 'Bearer ' + this.$store.state.token,  //'27|c8ssbxyALQKzuzzzrr2zd6wpiqQ87nmDGhs2KP0V',
           }
@@ -658,7 +658,7 @@ export default {
         };
         axios({
           method: 'post',
-          url: 'http://localhost/8_TFG/ObesityControlApp/public/api/patienttreatments',
+          url: 'patienttreatments',
           data: data,
           headers: {
             'Authorization': 'Bearer ' + this.$store.state.token,
@@ -704,7 +704,7 @@ export default {
         };
         axios({
           method: 'put',                                    
-          url: 'http://localhost/8_TFG/ObesityControlApp/public/api/patienttreatments/' + this.responsePatientTreatmentShow.patient_id + "/" + this.responsePatientTreatmentShow.patient_state_date,
+          url: 'patienttreatments/' + this.responsePatientTreatmentShow.patient_id + "/" + this.responsePatientTreatmentShow.patient_state_date,
           headers: {
             'Authorization': 'Bearer ' + this.$store.state.token,
           },        

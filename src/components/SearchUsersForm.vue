@@ -191,7 +191,7 @@ export default {
       if(validate){
         axios({
           method: 'get',
-          url: 'http://localhost/8_TFG/ObesityControlApp/public/api/users',
+          url: 'users',
           params: {
             name: this.userName,
             surname: this.userSurname,          
@@ -241,7 +241,7 @@ export default {
 
         axios({
           method: 'post',                                         //  ++++++++++++    //  <<<<<<<
-          url: 'http://localhost/8_TFG/ObesityControlApp/public/api/users/' + this.userID + "/" + this.userRole,
+          url: 'users/' + this.userID + "/" + this.userRole,
           //headers: {"Content-type": "application/json"},
           headers: {
             'Authorization': 'Bearer ' + this.$store.state.token,
@@ -277,7 +277,7 @@ export default {
       */
       axios({
         method: 'delete',
-        url: 'http://localhost/8_TFG/ObesityControlApp/public/api/users/' + userID + '/' + userRole,
+        url: 'users/' + userID + '/' + userRole,
         headers: {
         'Authorization': 'Bearer ' + this.$store.state.token,
         }

@@ -77,9 +77,9 @@ export default {
   },
   created(){
       // By default, the patients that have a status to be assigned treatment are shown
-      axios({
+      axios({                 // The same request as in getRequestToPatientControllerShow() but without form validation, and filling one of the parameters of the form by default
         method: 'get',
-        url: 'http://localhost/8_TFG/ObesityControlApp/public/api/patients',
+        url: 'patients',
         params: {
           name: null,
           surname: null,
@@ -143,7 +143,7 @@ export default {
         //alert('AJAX! ' + this.patientName + ' ' + this.patientSurname + ' ' + this.patientStatusToCheck);
         axios({
           method: 'get',
-          url: 'http://localhost/8_TFG/ObesityControlApp/public/api/patients',
+          url: 'patients',
           params: {
             name: this.patientName,
             surname: this.patientSurname,

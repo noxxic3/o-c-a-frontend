@@ -79,7 +79,7 @@ export default {
     deleteRequestToAuthControllerLogout(userID){
       axios({
         method: 'delete',
-        url: 'http://localhost/8_TFG/ObesityControlApp/public/api/logout/' + userID,
+        url: 'logout/' + userID,
         headers: {
         //'Authorization': 'Bearer ' + this.$store.state.token,
         }

@@ -152,7 +152,7 @@ export default {
       // GET request to TreatmentControllers Index()              // Request to receive the available list of any of the treatments 
       axios({
         method: 'get',
-        url: 'http://localhost/8_TFG/ObesityControlApp/public/api/'+ resource,     
+        url: resource,     
         headers: {
           'Authorization': 'Bearer ' + this.$store.state.token,  
         }
@@ -183,7 +183,7 @@ export default {
         //console.log('>> formData >> ', formData);
         axios({
           method: 'post',
-          url: 'http://localhost/8_TFG/ObesityControlApp/public/api/' + resource,
+          url: resource,
           headers: {
             'Authorization': 'Bearer ' + this.$store.state.token,
             'Content-Type': 'multipart/form-data'
@@ -220,7 +220,7 @@ export default {
         //console.log('>> formData >> ', formData);
         axios({
           method: 'post',
-          url: 'http://localhost/8_TFG/ObesityControlApp/public/api/' + resource + '/' + treatmentID,
+          url: resource + '/' + treatmentID,
           headers: {
             'Authorization': 'Bearer ' + this.$store.state.token,
             'Content-Type': 'multipart/form-data'
@@ -248,7 +248,7 @@ export default {
       //alert('deleteRequestToTreatmentsControllersDestroy() for treatment: ' + resource + ' and treatment ID: ' + treatmentID);
       axios({
         method: 'delete',
-        url: 'http://localhost/8_TFG/ObesityControlApp/public/api/' + resource + '/' + treatmentID,
+        url: resource + '/' + treatmentID,
         headers: {
           'Authorization': 'Bearer ' + this.$store.state.token,
         },

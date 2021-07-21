@@ -55,7 +55,7 @@ export default {
     postRequestToAuthControllerLogin(){
       axios({
         method: 'post',
-        url: 'http://localhost/8_TFG/ObesityControlApp/public/api/login',
+        url: 'login',
         headers: {"Content-type": "application/json"},
         data: {
           email: this.userEmail,

@@ -133,7 +133,7 @@ export default {
 
         axios({
           method: 'post',
-          url: 'http://localhost/8_TFG/ObesityControlApp/public/api/users',
+          url: 'users',
           //headers: {"Content-type": "application/json"},
           headers: {
             'Authorization': 'Bearer ' + this.$store.state.token,
