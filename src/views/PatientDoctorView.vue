@@ -1,7 +1,7 @@
 <template>
   <div class="about">
     <button class="breadcrumb" v-on:click="toDashboard()"> &#8617; Dashboard</button>
-    <img id="profileImage_doctorView" v-bind:src="'http://localhost/8_TFG/ObesityControlApp/public/storage/images/patients/'+$store.state.patient_image" alt="Patient image" ><br>
+    <img id="profileImage_doctorView" v-bind:src="$store.state.backendStorageURL + 'images/patients/' + $store.state.patient_image" alt="Patient image" ><br>
                           <!-- "http://localhost/8_TFG/ObesityControlApp/public/images/patients/"+ patient.id +".jpg" -->   <!-- The patient.id would be taken from the state of the user stored in the frontend, on this page it would not be necessary to make AJAX request -->
     <data-history-component />
   </div>

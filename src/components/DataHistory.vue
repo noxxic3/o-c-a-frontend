@@ -119,7 +119,7 @@
                 <h4>Diet image</h4> 
                 <!-- http://localhost/8_TFG/ObesityControlApp/public/images/treatments/medications/2.jpg -->
                 <!-- <img v-bind:src="responsePatientTreatmentShow_DataToShow['Diet'].diet_image" alt="Diet image"> -->
-                <img v-bind:src="'http://localhost/8_TFG/ObesityControlApp/public/storage/images/treatments/'+responsePatientTreatmentShow_DataToShow['Diet'].diet_image" alt="Diet image">
+                <img v-bind:src="$store.state.backendStorageURL + 'images/treatments/'+responsePatientTreatmentShow_DataToShow['Diet'].diet_image" alt="Diet image">
               </div>
               <div>
                 <h4>Diet name</h4> 
@@ -147,7 +147,7 @@
               <div>
                 <h4>Physical activity image</h4> 
                 <!-- <img v-bind:src="responsePatientTreatmentShow_DataToShow['Physical Activity'].physical_activities_image" alt="Physical Activity image"> -->
-                <img v-bind:src="'http://localhost/8_TFG/ObesityControlApp/public/storage/images/treatments/'+responsePatientTreatmentShow_DataToShow['Physical Activity'].physical_activities_image" alt="Physical Activity image">
+                <img v-bind:src="$store.state.backendStorageURL + 'images/treatments/'+responsePatientTreatmentShow_DataToShow['Physical Activity'].physical_activities_image" alt="Physical Activity image">
               </div>
               <div>
                 <h4>Physical activity name</h4> 
@@ -175,7 +175,7 @@
               <div>
                 <h4>Medication image</h4> 
                 <!-- <img v-bind:src="responsePatientTreatmentShow_DataToShow['Medication'].medication_image" alt="Medication image"> -->
-                <img v-bind:src="'http://localhost/8_TFG/ObesityControlApp/public/storage/images/treatments/'+responsePatientTreatmentShow_DataToShow['Medication'].medication_image" alt="Medication image">
+                <img v-bind:src="$store.state.backendStorageURL + 'images/treatments/'+responsePatientTreatmentShow_DataToShow['Medication'].medication_image" alt="Medication image">
               </div>
               <div>
                 <h4>Medication name</h4> 
@@ -231,7 +231,7 @@
         </div>
         <div><span>Name: </span>{{element.name}}</div>
         <div>
-          <img v-bind:src="'http://localhost/8_TFG/ObesityControlApp/public/storage/images/treatments/'+element.image" alt="Treatment image" >
+          <img v-bind:src="$store.state.backendStorageURL + 'images/treatments/'+element.image" alt="Treatment image" >
         </div>
         <div class="description">
           <input type="checkbox" v-bind:id="element.id"/>       

@@ -25,7 +25,7 @@
         </div>
         <div>
           <h3>Image</h3> 
-          <img class="userImage" v-bind:src="'http://localhost/8_TFG/ObesityControlApp/public/storage/images/patients/'+element['Image']" alt="User image">
+          <img class="userImage" v-bind:src="$store.state.backendStorageURL + 'images/patients/' + element['Image']" alt="User image">
         </div>
         <div>
           <h3>Name</h3> <p>{{element['Name']}}</p>

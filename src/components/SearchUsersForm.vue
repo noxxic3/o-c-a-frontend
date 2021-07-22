@@ -25,10 +25,10 @@
         </div>
         <div> 
           <h3>Image</h3>
-          <img class="userImage" v-if="element.role_name == 'Patient'"     v-bind:src="'http://localhost/8_TFG/ObesityControlApp/public/storage/images/patients/'+element.image" alt="User image">
-          <img class="userImage" v-if="element.role_name == 'Doctor'"      v-bind:src="'http://localhost/8_TFG/ObesityControlApp/public/images/users/'+'user-md-solid.svg'" alt="User image">
-          <img class="userImage" v-if="element.role_name == 'OfficeStack'" v-bind:src="'http://localhost/8_TFG/ObesityControlApp/public/images/users/'+'user-nurse-solid.svg'" alt="User image">
-          <img class="userImage" v-if="element.role_name == 'Admin'"       v-bind:src="'http://localhost/8_TFG/ObesityControlApp/public/images/users/'+'user-cog-solid.svg'" alt="User image">
+          <img class="userImage" v-if="element.role_name == 'Patient'"     v-bind:src="$store.state.backendStorageURL + 'images/patients/' + element.image" alt="User image">
+          <img class="userImage" v-if="element.role_name == 'Doctor'"      v-bind:src="$store.state.backendURL + 'images/users/'+'user-md-solid.svg'" alt="User image">
+          <img class="userImage" v-if="element.role_name == 'OfficeStack'" v-bind:src="$store.state.backendURL + 'images/users/'+'user-nurse-solid.svg'" alt="User image">
+          <img class="userImage" v-if="element.role_name == 'Admin'"       v-bind:src="$store.state.backendURL + 'images/users/'+'user-cog-solid.svg'" alt="User image">
           <!-- 
             Actually these images of the roles that are not 'Patient' would have to be received from the request to the backend, but in the logic of the UserController store() and update() I have only assigned the default image to the patient if he does not upload an image.
             In the other roles I have not put the possibility of uploading an image and in the backend I have not assigned them an image by default yet.

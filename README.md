@@ -28,14 +28,29 @@ npm install -g @vue/cli
 npm install
 ```
 
-3. Compiles and hot-reloads for development
+### Edit files
+
+1. In `/src/main.js`, put the correct URL of the backend API:
+```
+axios.defaults.baseURL = 'http://your-domain/public/api/'; 
+```
+
+2. In `/src/store/index.js`, put the correct URL of the backend & the backend storage folder:
+```
+backendURL: 'http://your-domain/public/',
+backendStorageURL: 'http://your-domain/public/storage/',
+```
+
+### Run development server
+
+* Compiles and hot-reloads for development
 ```
 npm run serve
 ```
 
 ### Building for Production
 
-1. Generate production build
+* Generate production build
 ```
 npm run build
 ```
@@ -65,6 +80,7 @@ Users access:
 | :---        | :---              |
 | admin_a@m   | password_adminA   |
 
+(This default data can be seen in the backend database).
 
 ## Contribution (Forking)
 De momento nada

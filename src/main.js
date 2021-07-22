@@ -6,8 +6,8 @@ import axios from 'axios';                                                      
 
 import './assets/css/main.css';                          // Global CSS
 
-//axios.defaults.baseURL = 'http://localhost/8_TFG/ObesityControlApp/public/api/';       // Axios base URL for all http requests
-axios.defaults.baseURL = 'http://localhost/10_TFG/o-c-a-backend/public/api/';            // Axios base URL for all http requests
+axios.defaults.baseURL = 'http://localhost/8_TFG/ObesityControlApp/public/api/';       // Axios base URL for all http requests
+//axios.defaults.baseURL = 'http://localhost/10_TFG/o-c-a-backend/public/api/';            // Axios base URL for all http requests
 
 Vue.config.productionTip = false;
 

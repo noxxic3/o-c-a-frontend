@@ -15,6 +15,11 @@ export default new Vuex.Store({
 	
 	view: '',                      // Current view being displayed
 	view_title: '',
+
+	backendURL: 'http://localhost/8_TFG/ObesityControlApp/public/',
+	//backendURL: 'http://localhost/10_TFG/o-c-a-backend/public/',
+	backendStorageURL: 'http://localhost/8_TFG/ObesityControlApp/public/storage/',
+	//backendStorageURL: 'http://localhost/10_TFG/o-c-a-backend/public/storage/',
   },
   mutations: {},
   actions: {},
@@ -23,3 +28,4 @@ export default new Vuex.Store({
 
 
 // this.$store.state.user_session.id
+// this.$store.state.backendStorageURL

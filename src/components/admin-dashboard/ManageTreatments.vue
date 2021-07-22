@@ -44,7 +44,7 @@
         </div>
         <div><span>Name: </span>{{element.name}}</div>
         <div>
-          <img v-bind:src="'http://localhost/8_TFG/ObesityControlApp/public/storage/images/treatments/'+element.image" alt="Treatment image" >
+          <img v-bind:src="$store.state.backendStorageURL + 'images/treatments/' + element.image" alt="Treatment image" >
         </div>
         <div class="description">
           <input type="checkbox" v-bind:id="element.id"/>      
